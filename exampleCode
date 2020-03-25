@@ -1,0 +1,126 @@
+""" Pre release 2020 example solution"""
+
+#phone arrays
+phone_itemcode = ["BPCM" , "BPSH" , "RPSS" , "RPLL" , "YPLS" , "YPLL"]
+phone_description = ["compact" , "clam shell" , " robophone - 5-inch screen & 64 GB memory" , "robophone - 6-inch phone and 256 GB memory" , "Y-Phone Standard – 6-inch screen and 64GB memory" , "Y-Phone Deluxe – 6-inch screen and 256GB memory"]
+phone_price = [29.99 , 49.99 , 199.99 , 499.99 , 549.99 , 649.99]
+
+#tablet arrays
+tablet_itemcode = ["RTMS" , "RTLM" , "YTLM" , "YTLL"]
+tablet_description = ["RoboTab – 8-inch screen and 64GB memory" , "RoboTab – 10-inch screen and 128GB memory" , "Y-Tab Standard – 10-inch screen and 128GB memory" , "Y-Tab Deluxe – 10-inch screen and 256GB memory"]
+tablet_price = [149.99 , 299.99 , 499.99 , 599.99]
+
+#sim arrays
+sim_itemcode = ["SMNO" , "SMPG"]
+sim_description = ["SIM Free (no SIM card purchased)" , "Pay As You Go (SIM card purchased)"]
+sim_price = [0.00 , 9.99]
+
+#case arrays
+case_itemcode = ["CSST" , "CSLX"]
+case_description = ["Standard" , "Luxury"]
+case_price = [0.00 , 50.00]
+
+#charger arrays
+charger_itemcode = ["CGCR" , "CGHM"]
+charger_description = ["Car" , "Home"]
+charger_price = [19.99 , 15.99]
+
+#variables/array to allow functioning of code
+price = 0
+num_devices_bought = 0
+names_devices_bought = []
+
+
+#allows a while loop so more than one device can be bought
+ans = input("Would you like to purchase a phone or tablet? (y/n) ")
+
+#allows several devices to be bought
+while ans == "y":
+  num_devices_bought += 1
+  print("This is device number",num_devices_bought,"that you're buying from us, so your previous total spent is $",price,". Anything bought today will be added to this.")
+  
+  #chooses between buying a phone or tablet
+  choice = input("Would you like to buy a phone or a tablet? ")
+  
+  #lets user choose a phone type
+  if choice == "phone":
+    print("Here we have a list of all our phones with their descriptions and prices:")
+    for x in range(0, len(phone_itemcode)):
+      print(x+1 , ":" , phone_itemcode[x] , phone_description[x] , phone_price[x])
+    phone = int(input("Which number for phone type would you like?: "))-1
+    
+    #enables discount if user has bought at least one device already
+    if num_devices_bought > 1:
+      price = price + (phone_price[phone]*0.9)
+      print("Instead of",phone_price[phone],", your phone will cost",phone_price[phone]*0.9,"since this is your",num_devices_bought," device and you save",phone_price[phone]*0.1)
+    elif num_devices_bought == 1:
+      price = price + phone_price[phone]
+    names_devices_bought.append(phone_description[phone])
+    
+    #allows user to purchase a sim if buying a phone
+    print("Now that you've chosen your phone, decide on a SIM. Here are the 2 available options:")
+    for x in range(0, len(sim_itemcode)):
+      print(x+1 , ":" , sim_itemcode[x] , sim_description[x] , sim_price[x])
+    sim = int(input("What number of SIM would you like?: "))-1
+    price = price + sim_price[sim]
+    names_devices_bought.append(sim_description[sim])
+  
+  #allows user to choose what tablet they're buying
+  if choice == "tablet":
+    print("Here we have a list of all our tablets with their descriptions and prices:")
+    for x in range(0, len(tablet_itemcode)):
+      print(x+1 , ":" , tablet_itemcode[x] , tablet_description[x] , tablet_price[x])
+    tablet = int(input("Which number for tablet type would you like?: "))-1
+
+    #enables discount if user has bought at least one device already
+    if num_devices_bought > 1:
+      price = price + (tablet_price[tablet]*0.9)
+      print("Instead of",tablet_price[tablet],", your phone will cost",tablet_price[tablet]*0.9,"since this is your",num_devices_bought,"device and you save",tablet_price[tablet]*0.1)
+    elif num_devices_bought == 1:
+      price = price + tablet_price[tablet]
+    names_devices_bought.append(tablet_description[tablet])
+    
+  #choosing a case
+  print("Now that you've chosen your",choice,", please choose a case to match.")
+  for x in range(0, len(case_itemcode)):
+      print(x+1 , ":" , case_itemcode[x] , case_description[x] , case_price[x])
+  case = int(input("Which number for case type would you like?: "))-1
+  price = price + case_price[case]
+  names_devices_bought.append(case_description[case])
+
+#choosing a charger - can have none, both, or only one
+  print("Finally, you may or may not want to buy a charger.")
+  charger_choice = input("Would you like a charger? (y/n) ")
+
+  #user decides to buy a charger
+  if charger_choice == "y":
+    for x in range(0, len(charger_itemcode)):
+      print(x+1 , ":" , charger_itemcode[x] , charger_description[x] , charger_price[x])
+    charger = int(input("Which number for charger type would you like?: "))-1
+    price = price + charger_price[charger]
+    names_devices_bought.append(charger_description[charger])
+
+    #allows user to potentially get both types of charger (done so automatically)
+    second_charger = input("Would you like to buy the other charger? (y/n) ")
+    if second_charger == "y":
+      print("Awesome! The other charger will be added to your purchases")
+      if charger == 0:
+        names_devices_bought.append(charger_description[1])
+      elif charger == 1:
+        names_devices_bought.append(charger_description[0])
+    elif second_charger == "n":
+      print("No worries! Enjoy your charger.")
+
+#user didn't want a charger
+  elif charger_choice == "n":
+    print("No worries! Your price will be unaffected.")
+  
+  #allows user to potentially buyanother device (restarts while loop)
+  ans = input("Would you like to buy another device? (y/n) ")
+
+if ans == "n":
+  print("No worries, have a nice day!")
+
+#shows user what they've bought and how much it cost
+print("Today, you bought",names_devices_bought,"and it cost you $",price)
+  
