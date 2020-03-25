@@ -1,0 +1,110 @@
+#Tech Shop
+#Storing item details in arrays
+phone_code = ["BPCM", "BPSH", "RPSS", "RPLL", "YPLS", "YPLL"]
+tablet_code = ["RTMS", "RTLM", "YTLM", "YTLL"]
+sim_code = ["SMNO", "SMPG"]
+case_code = ["CSST", "CSLX"]
+charger_code = ["CGCR", "CGHM"]
+phone_desc = ["Compact", "Clam Shell", "RoboPhone – 5-inch screen and 64GB memory", "RoboPhone – 6-inch screen and 256GB memory", "Y-Phone Standard – 6-inch screen and 64GB memory", "Y-Phone Deluxe – 6-inch screen and 256GB memory"]
+tablet_desc = ["RoboTab – 8-inch screen and 64GB memory", "RoboTab – 10-inch screen and 128GB memory", "Y-Tab Standard – 10-inch screen and 128GB memory", "Y-Tab Deluxe – 10-inch screen and 256GB memory"]
+sim_desc = ["SIM Free (no SIM card purchased)", "Pay As You Go (SIM card purchased)"]
+case_desc = ["Standard case", "Luxury case"]
+charger_desc = ["Car charger", "Home charger"]
+phone_price = [29.99, 49.99, 199.99, 499.99, 549.99, 649.99]
+tablet_price = [149.99, 299.99, 499.99, 599.99]
+sim_price = [0.00, 9.99]
+case_price = [0.00, 50.00]
+charger_price = [19.99, 15.99]
+total_price = 0
+items_bought = []
+count = 1 #To work out no. of devices bought and so whether discount needed
+saved = 0 #AMount of money saved
+
+#Print out items available, excluding SIM
+print("Phones:")
+for i in range(0, 5, 1):
+    print(phone_code[i], phone_desc[i], "$", phone_price[i])
+print("Tablets:")
+for i in range(0, 3, 1):
+  print(tablet_code[i], tablet_desc[i], "$", tablet_price[i])
+print("Cases:")
+for i in range(0, 2, 1):
+  print(case_code[i], case_desc[i], "$", case_price[i])
+print("Chargers:")
+for i in range(0, 2, 1):
+  print(charger_code[i], charger_desc[i], "$", charger_price[i])
+
+#Asks if user wants to buy a device
+request = input("Would you like to buy a device?")
+while request == "Yes" or request == "yes":
+  
+  #Type of device
+  taborphone = input("Do you want to buy a tablet or a phone?")
+  #Validation check
+  while taborphone != "tablet" and taborphone != "phone":
+    taborphone = input("Do you want to buy a tablet or a phone?")
+
+  #Tablet code, validation check and price added (inc. discount needed)
+  if taborphone == "tablet":
+    choice = input("Which tablet would you like to buy? Type in code.")
+    while choice not in tablet_code:
+      choice = input("Which tablet would you like to buy? Type in tablet code.")
+    pos = tablet_code.index(choice)
+
+    if count < 2:
+      total_price += tablet_price[pos]
+    else:
+      total_price += 0.9*(tablet_price[pos])
+      saved += 0.1*(phone_price[pos])
+    items_bought.append(tablet_desc[pos])
+
+  #Phone code, validation check and price added (inc. discount needed)
+  else:
+    choice = input("Which phone would you like to buy? Type in code.")
+    while choice not in phone_code:
+      choice = input("Which phone would you like to buy? Type in code.")
+    pos = phone_code.index(choice)
+
+    if count < 2:
+      total_price += phone_price[pos]
+    else:
+      total_price += 0.9*(phone_price[pos])
+      saved += 0.1*(phone_price[pos])
+    items_bought.append(phone_desc[pos])
+
+    #SIM code, validation check, price added
+    simchoice = input("Would you like it to be SIM free (type A) or Pay As You Go (costs $9.99, type B)?")
+    while simchoice not in "AB":
+      simchoice = input("Would you like it to be SIM free (type A) or Pay As You Go (type B)?")
+    if simchoice == "A":
+      items_bought.append(sim_desc[0])
+    else:
+      total_price += sim_price[1]
+      items_bought.append(sim_desc[1])
+
+  #Case code, validation and price added
+  choice = input("Which case would you like to buy? Type in code.")
+  while choice not in case_code:
+    choice = input("Which case would you like to buy?")
+  pos = case_code.index(choice)
+  total_price += case_price[pos]
+  items_bought.append(case_desc[pos])
+  #Charger code, validation and price added
+  choice = input("Would you like to buy a car charger, home charger, both or neither? Type in the code, type in 'both' or type in 'none'.")
+  if choice in charger_code:
+    pos = charger_code.index(choice)
+    total_price += charger_price[pos]
+    items_bought.append(charger_desc[pos])
+  elif choice == "both":
+    total_price += sum(charger_price)
+    items_bought.append(charger_desc)
+  else:
+    pass
+
+  request = input("Would you like to buy another device?")
+  count += 1
+print(" ")
+#Printing receipt
+for i in range(0, len(items_bought), 1):
+  print(items_bought[i])
+print("Total price: ", round(total_price, 2), "Amount saved: ", saved)
